@@ -26,7 +26,7 @@ public class MemoryCashbookRepository implements CashbookRepository {
     }
 
     @Override
-    public List<Cashbook> findAll(String month) {
+    public List<Cashbook> findAll() {
         return cashbookList;
     }
 }

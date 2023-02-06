@@ -5,6 +5,8 @@ import minsoo.cashbook.cashbook.repository.CashbookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CashbookService {
 
@@ -17,5 +19,9 @@ public class CashbookService {
 
     public void join(Cashbook cashbook) {
         cashbookRepository.save(cashbook);
+    }
+
+    public List<Cashbook> findAll() {
+        return cashbookRepository.findAll();
     }
 }

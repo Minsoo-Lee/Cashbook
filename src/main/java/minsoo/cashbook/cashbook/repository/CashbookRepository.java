@@ -8,5 +8,5 @@ public interface CashbookRepository {
 
     void save(Cashbook cashbook);
     List<Cashbook> findByMonth(String month);
-    List<Cashbook> findAll(String month);
+    List<Cashbook> findAll();
 }

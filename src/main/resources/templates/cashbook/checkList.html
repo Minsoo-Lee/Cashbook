@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="container">
+    <div>
+        <table>
+            <thead>
+            <tr>
+                <th>날짜</th>
+                <th>유형</th>
+                <th>내용</th>
+                <th>수입</th>
+                <th>지출</th>
+                <th>잔액</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="cashbook : ${cashbookList}">
+                <td th:text="${cashbook.date}"></td>
+                <td th:text="${cashbook.type}"></td>
+                <td th:text="${cashbook.content}"></td>
+                <td th:text="${cashbook.income}"></td>
+                <td th:text="${cashbook.expense}"></td>
+                <td th:text="${cashbook.balance}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div> <!-- /container -->
+</body>
+</html>
