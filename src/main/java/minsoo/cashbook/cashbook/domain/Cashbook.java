@@ -1,4 +1,4 @@
-package minsoo.cashbook.cashbook;
+package minsoo.cashbook.cashbook.domain;
 
 public class Cashbook {
 
