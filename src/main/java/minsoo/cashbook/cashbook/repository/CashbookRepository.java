@@ -9,6 +9,10 @@ public interface CashbookRepository {
 
     Cashbook save(Cashbook cashbook);
     Optional<Cashbook> findById(Long id);
-    Optional<Cashbook> findByMonth(String month);
+    List<Cashbook> findByMonth(String month);
     List<Cashbook> findAll();
+
+    // 테스트용
+    void clearAll();
+    public int getSize();
 }

@@ -24,21 +24,25 @@ public class MemoryCashbookRepository implements CashbookRepository {
     }
 
     @Override
-    public Optional<Cashbook> findByMonth(String month) {
-        return store.values().stream()
-                .filter(cashbook -> cashbook.getDate().split("-")[2].equals(month))
-                .findAny();
-
-//        List<Cashbook> result = new ArrayList<>();
-//        for (Cashbook cashbook : cashbookList) {
-//            if (cashbook.getDate().split("-")[2].equals(month))
-//                result.add(cashbook);
-//        }
-//        return result;
+    public List<Cashbook> findByMonth(String month) {
+        List<Cashbook> result = new ArrayList<>();
+        for (Cashbook cashbook : store.values()) {
+            if (cashbook.getDate().split("-")[1].equals(month))
+                result.add(cashbook);
+        }
+        return result;
     }
 
     @Override
     public List<Cashbook> findAll() {
         return new ArrayList<>(store.values());
+    }
+
+    public void clearAll() {
+        store.clear();
+    }
+
+    public int getSize() {
+        return store.size();
     }
 }

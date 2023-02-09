@@ -1,20 +1,23 @@
 package minsoo.cashbook.cashbook.domain;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.stereotype.Component;
+import lombok.*;
 
 @Getter
 @Setter
+@RequiredArgsConstructor
 public class Cashbook {
 
     private Long id;
 
-    private String date;
-    private String type;
-    private String content;
-    private int income;
-    private int expense;
-    private int balance;
+    @NonNull private String date;
+    @NonNull private String type;
+    @NonNull private String content;
+    @NonNull private int income;
+    @NonNull private int expense;
+    @NonNull private int balance;
 
+    @Override
+    public String toString() {
+        return id + " | "  + date + " | "  + type + " | "  + content + " | "  + income + " | "  + expense + " | "  + balance;
+    }
 }
