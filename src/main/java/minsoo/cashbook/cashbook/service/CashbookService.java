@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CashbookService {
@@ -21,6 +22,7 @@ public class CashbookService {
         cashbookRepository.save(cashbook);
     }
 
+    public Optional<Cashbook> findOne(Long id) { return cashbookRepository.findById(id); }
     public List<Cashbook> findAll() {
         return cashbookRepository.findAll();
     }

@@ -1,6 +1,14 @@
 package minsoo.cashbook.cashbook.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.stereotype.Component;
+
+@Getter
+@Setter
 public class Cashbook {
+
+    private Long id;
 
     private String date;
     private String type;
@@ -9,51 +17,4 @@ public class Cashbook {
     private int expense;
     private int balance;
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public int getIncome() {
-        return income;
-    }
-
-    public void setIncome(int income) {
-        this.income = income;
-    }
-
-    public int getExpense() {
-        return expense;
-    }
-
-    public void setExpense(int expense) {
-        this.expense = expense;
-    }
-
-    public int getBalance() {
-        return balance;
-    }
-
-    public void setBalance(int balance) {
-        this.balance = balance;
-    }
 }
