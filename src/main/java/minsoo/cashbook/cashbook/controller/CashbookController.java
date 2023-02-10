@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class CashbookController {
 
     public final CashbookService cashbookService;
+    public String search = null;
 
     @Autowired
     public CashbookController(CashbookService cashbookService) {
@@ -30,8 +31,24 @@ public class CashbookController {
         return "redirect:/";
     }
 
-    @GetMapping("/cashbook/check")
-    public String check(Model model) {
+    @GetMapping("/cashbook/checkMonth")
+    public String showMonth(Model model) {
+        if (search == null) {
+            model.addAttribute("cashbookList", cashbookService.findAll());
+            return "cashbook/checkList";
+        }
+        model.addAttribute("cashbookList", cashbookService.findMonth(search));
+        search = null;
+        return "cashbook/checkList";
+    }
+    @PostMapping("/cashbook/checkMonth")
+    public String checkMonth(String month) {
+        search = month;
+        return "cashbook/checkList";
+    }
+
+    @GetMapping("/cashbook/checkAll")
+    public String checkAll(Model model) {
         model.addAttribute("cashbookList", cashbookService.findAll());
         return "cashbook/checkList";
     }

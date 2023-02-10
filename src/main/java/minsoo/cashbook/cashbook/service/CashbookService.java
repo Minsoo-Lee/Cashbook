@@ -26,4 +26,7 @@ public class CashbookService {
     public List<Cashbook> findAll() {
         return cashbookRepository.findAll();
     }
+    public List<Cashbook> findMonth(String month) {
+        return cashbookRepository.findByMonth(month);
+    }
 }

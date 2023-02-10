@@ -6,6 +6,7 @@
         <table>
             <thead>
             <tr>
+                <th>순번</th>
                 <th>날짜</th>
                 <th>유형</th>
                 <th>내용</th>
@@ -16,6 +17,7 @@
             </thead>
             <tbody>
             <tr th:each="cashbook : ${cashbookList}">
+                <td th:text="${cashbook.id}"></td>
                 <td th:text="${cashbook.date}"></td>
                 <td th:text="${cashbook.type}"></td>
                 <td th:text="${cashbook.content}"></td>
@@ -25,6 +27,15 @@
             </tr>
             </tbody>
         </table>
+    </div>
+    <div>
+        <form action="/cashbook/checkMonth" method="post">
+            <div class="form-group">
+                <label for="month">월 검색</label>
+                <input type="text" id="month" name="month" placeholder="MM">
+            </div>
+            <button type="submit" >검색</button>
+        </form>
     </div>
 </div> <!-- /container -->
 </body>
