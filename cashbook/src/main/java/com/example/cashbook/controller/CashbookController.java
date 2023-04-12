@@ -16,7 +16,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-public class BasicCashbookController {
+public class CashbookController {
 
     private final CashbookRepository repository;
 
@@ -59,6 +59,19 @@ public class BasicCashbookController {
     public String editCashbook(@PathVariable Long id, @ModelAttribute Cashbook cashbook) {
         repository.update(id, cashbook);
         return "redirect:/basic/cashbook/{id}";
+    }
+
+    @GetMapping("/delete")
+    public String delete(Model model) {
+        List<Cashbook> cashbooks = repository.findByAll();
+        model.addAttribute("cashbooks", cashbooks);
+        return "basic/deleteForm";
+    }
+
+    @PostMapping("/delete")
+    public String deleteCashbook(@RequestBody List<Cashbook> cashbooks) {
+        log.info("[cashbooks] {}", cashbooks);
+        return "basic/cashbook";
     }
 
     @PostConstruct

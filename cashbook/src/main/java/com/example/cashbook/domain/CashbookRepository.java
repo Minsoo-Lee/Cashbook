@@ -37,6 +37,14 @@ public class CashbookRepository {
         find.setBalance(cashbook.getBalance());
     }
 
+    public List<Cashbook> delete() {
+        for (Long id : store.keySet()) {
+            if (store.get(id).isCheck())
+                store.remove(id);
+        }
+        return new ArrayList<>(store.values());
+    }
+
     public void clearStore() {
         store.clear();
     }

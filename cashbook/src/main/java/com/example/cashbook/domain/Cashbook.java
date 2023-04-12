@@ -13,6 +13,7 @@ public class Cashbook {
     private Integer expense;
     private Integer income;
     private int balance;
+    private boolean check;
 
     public Cashbook(String date, String type, String content, Integer expense, Integer income, int balance) {
         this.date = date;
