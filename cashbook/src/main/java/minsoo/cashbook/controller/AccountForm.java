@@ -1,21 +1,15 @@
-package minsoo.cashbook.account;
+package minsoo.cashbook.controller;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter @Setter
-@ToString
-@AllArgsConstructor
-public class Account {
-    private Long id;
+public class AccountForm {
+
     private String date;
     private String type;
     private String content;
     private Integer expend;
     private Integer income;
     private Integer balance;
-
-
 }

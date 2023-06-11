@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="container">
+    <div>
+        <table>
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>날짜</th>
+                <th>타입</th>
+                <th>내용</th>
+                <th>지출</th>
+                <th>수입</th>
+                <th>잔액</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="account : ${accounts}">
+                <td th:text="${account.id}"></td>
+                <td th:text="${account.date}"></td>
+                <td th:text="${account.type}"></td>
+                <td th:text="${account.content}"></td>
+                <td th:text="${account.expend}"></td>
+                <td th:text="${account.income}"></td>
+                <td th:text="${account.balance}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
