@@ -2,19 +2,13 @@ package minsoo.cashbook.domain;
 
 import lombok.*;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity
-@Getter @Setter
-@ToString
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 public class Account {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String date;
     private String type;
@@ -23,5 +17,12 @@ public class Account {
     private Integer income;
     private Integer balance;
 
-
+    public Account(String date, String type, String content, Integer expend, Integer income, Integer balance) {
+        this.date = date;
+        this.type = type;
+        this.content = content;
+        this.expend = expend;
+        this.income = income;
+        this.balance = balance;
+    }
 }

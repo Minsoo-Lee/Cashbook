@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <link href="../css/bootstrap.min.css"
+        th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body>
+<div class="container" style="max-width: 600px">
+  <div class="py-5 text-center">
+    <h2>가계부 목록</h2> </div>
+  <div class="row">
+    <div class="col">
+      <button class="btn btn-primary float-end"
+              onclick="location.href='addForm.html'"
+              th:onclick="|location.href='@{/basic/accounts/add}'|" type="button">가계부 등록</button>
+    </div>
+  </div>
+  <hr class="my-4">
+  <div>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>날짜</th>
+        <th>타입</th>
+        <th>내용</th>
+        <th>지출</th>
+        <th>수입</th>
+        <th>잔액</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="account : ${accounts}">
+        <td><a href="account.html" th:href="@{/basic/accounts/{id} (id=${account.id})}" th:text="${account.id}">ID</a></td>
+        <td><a href="account.html" th:href="@{|/basic/accounts/${account.id}|}" th:text="${account.date}">날짜</a></td>
+        <td th:text="${account.type}">식비</td>
+        <td th:text="${account.content}">편의점</td>
+        <td th:text="${account.expend}">100</td>
+        <td th:text="${account.income}">1000</td>
+        <td th:text="${account.balance}">900</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div> <!-- /container -->
+</body>
+</html>
