@@ -77,10 +77,10 @@ public class AccountController {
             errors.put("expend", "지출은 양의 정수만 허용합니다.");
         }
         if (account.getIncome() == null || account.getIncome() < 0) {
-            errors.put("expend", "수입은 양의 정수만 허용합니다.");
+            errors.put("income", "수입은 양의 정수만 허용합니다.");
         }
         if (account.getBalance() == null || account.getBalance() < 0) {
-            errors.put("expend", "잔액은 양의 정수만 허용합니다.");
+            errors.put("balance", "잔액은 양의 정수만 허용합니다.");
         }
     }
 
