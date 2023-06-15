@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Data
+@NoArgsConstructor
 public class Account {
 
     private Long id;

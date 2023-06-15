@@ -5,11 +5,14 @@ import minsoo.cashbook.domain.Account;
 import minsoo.cashbook.repository.AccountRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.PostConstruct;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/basic/accounts")
@@ -33,54 +36,52 @@ public class AccountController {
     }
 
     @GetMapping("/add")
-    public String addForm() {
+    public String addForm(Model model) {
+        model.addAttribute("account", new Account());
         return "basic/addForm";
     }
 
-    //@PostMapping("/add")
-    public String addAccountV1(@RequestParam String date,
-                            @RequestParam String type,
-                            @RequestParam String content,
-                            @RequestParam Integer expend,
-                            @RequestParam Integer income,
-                            @RequestParam Integer balance,
-                            Model model) {
-        Account account = new Account("06/20", "eat", "house", 100, 1000, 900);
-        accountRepository.save(account);
-        model.addAttribute("account", account);
-        return "basic/account";
-    }
-
-    //@PostMapping("/add")
-    public String addAccountV2(@ModelAttribute("account") Account account, Model model) {
-        accountRepository.save(account);
-        return "basic/account";
-    }
-
-    //@PostMapping("/add")
-    public String addAccountV3(@ModelAttribute Account account) {
-        accountRepository.save(account);
-        return "basic/account";
-    }
-
-    //@PostMapping("/add")
-    public String addAccountV4(Account account) {
-        accountRepository.save(account);
-        return "basic/account";
-    }
-
-    //@PostMapping("/add")
-    public String addAccountV5(Account account) {
-        accountRepository.save(account);
-        return "redirect:/basic/accounts/" + account.getId();
-    }
-
     @PostMapping("/add")
-    public String addAccountV6(Account account, RedirectAttributes redirectAttributes) {
+    public String addAccountV6(@ModelAttribute Account account, RedirectAttributes redirectAttributes,
+                               Model model) {
+        // 검증 오류 결과를 보관
+        Map<String, String> errors = new HashMap<>();
+
+        // 검증 로직
+        putErrors(account, errors);
+
+        // 검증에 실패하면 다시 입력 폼으로
+        if (!errors.isEmpty()) {
+            model.addAttribute("errors", errors);
+            return "basic/addForm";
+        }
+
+        // 성공 로직
         Account savedAccount = accountRepository.save(account);
         redirectAttributes.addAttribute("id", savedAccount.getId());
         redirectAttributes.addAttribute("status", true);
         return "redirect:/basic/accounts/{id}";
+    }
+
+    private static void putErrors(Account account, Map<String, String> errors) {
+        if (!StringUtils.hasText(account.getDate())) {
+            errors.put("date", "날짜는 필수입니다.");
+        }
+        if (!StringUtils.hasText(account.getType())) {
+            errors.put("type", "타입은 필수입니다.");
+        }
+        if (!StringUtils.hasText(account.getContent())) {
+            errors.put("content", "내용은 필수입니다.");
+        }
+        if (account.getExpend() == null || account.getExpend() < 0) {
+            errors.put("expend", "지출은 양의 정수만 허용합니다.");
+        }
+        if (account.getIncome() == null || account.getIncome() < 0) {
+            errors.put("expend", "수입은 양의 정수만 허용합니다.");
+        }
+        if (account.getBalance() == null || account.getBalance() < 0) {
+            errors.put("expend", "잔액은 양의 정수만 허용합니다.");
+        }
     }
 
     @GetMapping("/{id}/edit")
