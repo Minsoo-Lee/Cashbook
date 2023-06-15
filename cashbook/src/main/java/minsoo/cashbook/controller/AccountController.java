@@ -151,6 +151,78 @@ public class AccountController {
             bindingResult.addError(new FieldError("account", "balance", account.getBalance(), false, null, null, "잔액은 양의 정수만 허용합니다."));
     }
 
+    //@PostMapping("/add")
+    public String addAccountV3(@ModelAttribute Account account, RedirectAttributes redirectAttributes,
+                               BindingResult bindingResult) {
+        // 검증 로직
+        putErrorsV3(account, bindingResult);
+
+        // 검증에 실패하면 다시 입력 폼으로
+        if (bindingResult.hasErrors()) {
+            log.info("errors={}", bindingResult);
+            return "basic/addForm";
+        }
+
+        // 성공 로직
+        Account savedAccount = accountRepository.save(account);
+        redirectAttributes.addAttribute("id", savedAccount.getId());
+        redirectAttributes.addAttribute("status", true);
+        return "redirect:/basic/accounts/{id}";
+    }
+
+    private static void putErrorsV3(Account account, BindingResult bindingResult) {
+        if (!StringUtils.hasText(account.getDate()))
+            bindingResult.addError(new FieldError("account", "date", account.getDate(), false, new String[]{"required.account.date"}, null, null));
+        if (!StringUtils.hasText(account.getType()))
+            bindingResult.addError(new FieldError("account", "type", account.getType(), false, new String[]{"required.account.type"}, null, null));
+        if (!StringUtils.hasText(account.getContent()))
+            bindingResult.addError(new FieldError("account", "content", account.getContent(), false, new String[]{"required.account.content"}, null, null));
+        if (account.getExpend() == null || account.getExpend() < 0)
+            bindingResult.addError(new FieldError("account", "expend", account.getExpend(), false, new String[]{"required.account.expend"}, null, null));
+        if (account.getIncome() == null || account.getIncome() < 0)
+            bindingResult.addError(new FieldError("account", "income", account.getIncome(), false, new String[]{"required.account.income"}, null, null));
+        if (account.getBalance() == null || account.getBalance() < 0)
+            bindingResult.addError(new FieldError("account", "balance", account.getBalance(), false, new String[]{"required.account.balance"}, null, null));
+    }
+
+    @PostMapping("/add")
+    public String addAccountV4(@ModelAttribute Account account, RedirectAttributes redirectAttributes,
+                               BindingResult bindingResult) {
+
+        log.info("objectName = {}", bindingResult.getObjectName());
+        log.info("target = {}", bindingResult.getTarget());
+
+        // 검증 로직
+        putErrorsV4(account, bindingResult);
+
+        // 검증에 실패하면 다시 입력 폼으로
+        if (bindingResult.hasErrors()) {
+            log.info("errors={}", bindingResult);
+            return "basic/addForm";
+        }
+
+        // 성공 로직
+        Account savedAccount = accountRepository.save(account);
+        redirectAttributes.addAttribute("id", savedAccount.getId());
+        redirectAttributes.addAttribute("status", true);
+        return "redirect:/basic/accounts/{id}";
+    }
+
+    private static void putErrorsV4(Account account, BindingResult bindingResult) {
+        if (!StringUtils.hasText(account.getDate()))
+            bindingResult.rejectValue("date", "required");
+        if (!StringUtils.hasText(account.getType()))
+            bindingResult.rejectValue("type", "required");
+        if (!StringUtils.hasText(account.getContent()))
+            bindingResult.rejectValue("content", "required");
+        if (account.getExpend() == null || account.getExpend() < 0)
+            bindingResult.rejectValue("expend", "required");
+        if (account.getIncome() == null || account.getIncome() < 0)
+            bindingResult.rejectValue("income", "required");
+        if (account.getBalance() == null || account.getBalance() < 0)
+            bindingResult.rejectValue("balance", "required");
+    }
+
     @GetMapping("/{id}/edit")
     public String editForm(@PathVariable Long id, Model model) {
         Account account = accountRepository.findById(id);
