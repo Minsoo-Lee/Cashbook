@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -82,12 +83,9 @@ public class AccountController {
             errors.put("balance", "잔액은 양의 정수만 허용합니다.");
     }
 
-    @PostMapping("/add")
+    //@PostMapping("/add")
     public String addAccountV1(@ModelAttribute Account account, RedirectAttributes redirectAttributes,
                                BindingResult bindingResult) {
-        // 검증 오류 결과를 보관
-        Map<String, String> errors = new HashMap<>();
-
         // 검증 로직
         putErrorsV1(account, bindingResult);
 
@@ -117,6 +115,40 @@ public class AccountController {
             bindingResult.addError(new FieldError("account", "income", "수입은 양의 정수만 허용합니다."));
         if (account.getBalance() == null || account.getBalance() < 0)
             bindingResult.addError(new FieldError("account", "balance", "잔액은 양의 정수만 허용합니다."));
+    }
+
+    //@PostMapping("/add")
+    public String addAccountV2(@ModelAttribute Account account, RedirectAttributes redirectAttributes,
+                               BindingResult bindingResult) {
+        // 검증 로직
+        putErrorsV2(account, bindingResult);
+
+        // 검증에 실패하면 다시 입력 폼으로
+        if (bindingResult.hasErrors()) {
+            log.info("errors={}", bindingResult);
+            return "basic/addForm";
+        }
+
+        // 성공 로직
+        Account savedAccount = accountRepository.save(account);
+        redirectAttributes.addAttribute("id", savedAccount.getId());
+        redirectAttributes.addAttribute("status", true);
+        return "redirect:/basic/accounts/{id}";
+    }
+
+    private static void putErrorsV2(Account account, BindingResult bindingResult) {
+        if (!StringUtils.hasText(account.getDate()))
+            bindingResult.addError(new FieldError("account", "date", account.getDate(), false, null, null, "날짜는 필수입니다."));
+        if (!StringUtils.hasText(account.getType()))
+            bindingResult.addError(new FieldError("account", "type", account.getType(), false, null, null, "타입은 필수입니다."));
+        if (!StringUtils.hasText(account.getContent()))
+            bindingResult.addError(new FieldError("account", "content", account.getContent(), false, null, null, "내용은 필수입니다."));
+        if (account.getExpend() == null || account.getExpend() < 0)
+            bindingResult.addError(new FieldError("account", "expend", account.getExpend(), false, null, null, "지출은 양의 정수만 허용합니다."));
+        if (account.getIncome() == null || account.getIncome() < 0)
+            bindingResult.addError(new FieldError("account", "income", account.getIncome(), false, null, null, "수입은 양의 정수만 허용합니다."));
+        if (account.getBalance() == null || account.getBalance() < 0)
+            bindingResult.addError(new FieldError("account", "balance", account.getBalance(), false, null, null, "잔액은 양의 정수만 허용합니다."));
     }
 
     @GetMapping("/{id}/edit")
