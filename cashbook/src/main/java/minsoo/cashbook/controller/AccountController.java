@@ -7,17 +7,14 @@ import minsoo.cashbook.repository.AccountRepository;
 import minsoo.cashbook.validator.AccountValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.PostConstruct;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Controller
@@ -49,10 +46,8 @@ public class AccountController {
     }
 
     @PostMapping("/add")
-    public String addAccountV5(@ModelAttribute Account account, RedirectAttributes redirectAttributes,
-                               BindingResult bindingResult) {
-
-        accountValidator.validate(account, bindingResult);
+    public String addAccount(@Validated @ModelAttribute Account account, BindingResult bindingResult,
+                             RedirectAttributes redirectAttributes) {
 
         // 검증에 실패하면 다시 입력 폼으로
         if (bindingResult.hasErrors()) {
@@ -75,9 +70,20 @@ public class AccountController {
     }
 
     @PostMapping("/{id}/edit")
-    public String edit(@PathVariable Long id, @ModelAttribute Account account) {
+    public String edit(@PathVariable Long id, @Validated @ModelAttribute Account account,
+                       BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            log.info("errors = {}", bindingResult);
+            return "basic/editForm";
+        }
         accountRepository.update(id, account);
         return "redirect:/basic/accounts/{id}";
+    }
+
+    @InitBinder
+    public void init(WebDataBinder dataBinder) {
+        log.info("initBinder = {}", dataBinder);
+        dataBinder.addValidators(accountValidator);
     }
 
     /**

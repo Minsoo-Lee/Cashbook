@@ -1,10 +1,12 @@
 package minsoo.cashbook.validator;
 
 import minsoo.cashbook.domain.Account;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+@Component
 public class AccountValidator implements Validator {
 
     @Override
